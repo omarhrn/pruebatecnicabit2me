@@ -1,26 +1,31 @@
-package com.pruebatecnicaomar.PruebaTecnicaOmar.dto;
+package com.pruebatecnicaomar.PruebaTecnicaOmar.model;
 
 import java.util.Date;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
 
 @Data
-public class Criptomoneda {
+@Document(collection = "criptomonedas")
+public class CriptomonedaEntity {
 
+	@Id
 	private int id;
 	private String nombre;
 	private double precio;
 	private String simbolo;
 	private Date ultimaActualizacion;
 	
-
-	public Criptomoneda() {
+	
+	public CriptomonedaEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 
-	public Criptomoneda(int id, String nombre, double precio, String simbolo, Date ultimaActualizacion) {
+	public CriptomonedaEntity(int id, String nombre, double precio, String simbolo, Date ultimaActualizacion) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -28,5 +33,4 @@ public class Criptomoneda {
 		this.simbolo = simbolo;
 		this.ultimaActualizacion = ultimaActualizacion;
 	}
-	
 }
