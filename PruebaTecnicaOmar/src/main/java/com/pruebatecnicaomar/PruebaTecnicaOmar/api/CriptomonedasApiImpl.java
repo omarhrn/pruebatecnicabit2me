@@ -10,13 +10,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.pruebatecnicaomar.PruebaTecnicaOmar.dto.CoinHistorial;
 import com.pruebatecnicaomar.PruebaTecnicaOmar.dto.Criptomoneda;
 import com.pruebatecnicaomar.PruebaTecnicaOmar.dto.Root;
 import com.pruebatecnicaomar.PruebaTecnicaOmar.service.CriptomonedaServiceImpl;
+import com.pruebatecnicaomar.PruebaTecnicaOmar.service.HistorialService;
+import com.pruebatecnicaomar.PruebaTecnicaOmar.service.HistorialServiceImpl;
 
 @RestController
 public class CriptomonedasApiImpl implements CriptomonedasApi{
 
+	public static final String BTC = "BTC";
+	public static final String ADA = "ADA";
+	public static final String LRC = "LRC";
+	
 	private static final String SYMBOLSCOINS = "BTC,LRC,ADA";
 	private static final int	RES_OK		 = 0;
 	
@@ -24,6 +31,8 @@ public class CriptomonedasApiImpl implements CriptomonedasApi{
 	
 	@Autowired
 	private CriptomonedaServiceImpl criptomonedaService;
+	@Autowired
+	private HistorialServiceImpl historialService;
 	
 	@Override
 	@GetMapping(value="/getPrecioCriptomonedaByNombre")
@@ -38,6 +47,34 @@ public class CriptomonedasApiImpl implements CriptomonedasApi{
 		
 		return res;
 	}
+	
+	@Override
+	@GetMapping(value="/getHistorial")
+	public List<CoinHistorial> getHistorial(@RequestParam String simbolo, @RequestParam int ultimosMinutos) {
+		List<CoinHistorial> res = new ArrayList<>();
+		try {
+			switch (simbolo.toUpperCase()) {
+			case BTC:
+				res = historialService.getHistorialBTC(ultimosMinutos);
+				break;
+			case LRC:
+				res = historialService.getHistorialLRC(ultimosMinutos);			
+				break;
+			case ADA:
+				res = historialService.getHistorialADA(ultimosMinutos);
+				break;
+			default:
+				break;
+			}
+		} catch (Exception e) {
+			throw new ResponseStatusException(
+			           HttpStatus.NOT_FOUND, "Tenemos informacion sobre: Bitcoin, Loopring y Cardano");
+		}
+		
+		return res;
+	}
+	
+	
 	
 	@Override
 	@GetMapping(value="/actualizaMonedas")

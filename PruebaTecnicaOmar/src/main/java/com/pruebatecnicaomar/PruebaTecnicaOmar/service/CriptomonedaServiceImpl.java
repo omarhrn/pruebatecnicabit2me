@@ -1,29 +1,60 @@
 package com.pruebatecnicaomar.PruebaTecnicaOmar.service;
 
+import java.util.Date;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pruebatecnicaomar.PruebaTecnicaOmar.dao.ADAHistorialRepository;
+import com.pruebatecnicaomar.PruebaTecnicaOmar.dao.BTCHistorialRepository;
 import com.pruebatecnicaomar.PruebaTecnicaOmar.dao.CriptomonedaRepository;
+import com.pruebatecnicaomar.PruebaTecnicaOmar.dao.LRCHistorialRepository;
 import com.pruebatecnicaomar.PruebaTecnicaOmar.dto.Criptomoneda;
+import com.pruebatecnicaomar.PruebaTecnicaOmar.model.ADAHistorialEntity;
+import com.pruebatecnicaomar.PruebaTecnicaOmar.model.BTCHistorialEntity;
+import com.pruebatecnicaomar.PruebaTecnicaOmar.model.CoinHistorialEntity;
 import com.pruebatecnicaomar.PruebaTecnicaOmar.model.CriptomonedaEntity;
+import com.pruebatecnicaomar.PruebaTecnicaOmar.model.LRCHistorialEntity;
 
 @Service
 public class CriptomonedaServiceImpl implements CriptomonedaService {
 
-	
 	private ModelMapper mapper = new ModelMapper();
 	
 	@Autowired
 	private CriptomonedaRepository criptomonedaRepo;
 	
+	@Autowired
+	private ADAHistorialRepository adaHistorialRepo;
+	@Autowired
+	private BTCHistorialRepository btcHistorialRepo;
+	@Autowired
+	private LRCHistorialRepository lrcHistorialRepo;
+	
 	@Override
 	public void guardarCriptomoneda(Criptomoneda criptomoneda) {
 		if (criptomonedaRepo.existsById(criptomoneda.getId())) {
-			//Actualizamos el precio
-			criptomonedaRepo.save(mapper.map(criptomoneda, CriptomonedaEntity.class));
-			//Guardamos en el historial
+			CriptomonedaEntity criptomonedaEntity = mapper.map(criptomoneda, CriptomonedaEntity.class);
 			
+			//Actualizamos el precio
+			criptomonedaRepo.save(criptomonedaEntity);
+			
+			Date fecha = new Date();
+			//Guardamos en el historial
+			switch (criptomoneda.getSimbolo()) {
+			case "ADA":
+				adaHistorialRepo.insert( new ADAHistorialEntity(criptomonedaEntity.getUltimaActualizacion().getTime(), criptomonedaEntity.getUltimaActualizacion(), criptomonedaEntity));
+				break;
+			case "BTC":
+				btcHistorialRepo.insert(new BTCHistorialEntity(criptomonedaEntity.getUltimaActualizacion().getTime(), criptomonedaEntity.getUltimaActualizacion(), criptomonedaEntity));
+				break;
+			case "LRC":
+				lrcHistorialRepo.insert( new LRCHistorialEntity(criptomonedaEntity.getUltimaActualizacion().getTime(), criptomonedaEntity.getUltimaActualizacion(), criptomonedaEntity));
+				break;
+			default:
+				break;
+			}
 		}else {
 			//Caso especial lo insertamos
 			criptomonedaRepo.insert(mapper.map(criptomoneda, CriptomonedaEntity.class));
