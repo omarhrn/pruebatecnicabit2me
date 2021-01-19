@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +17,7 @@ import com.pruebatecnicaomar.PruebaTecnicaOmar.dto.CoinHistorial;
 import com.pruebatecnicaomar.PruebaTecnicaOmar.dto.Criptomoneda;
 import com.pruebatecnicaomar.PruebaTecnicaOmar.dto.Root;
 import com.pruebatecnicaomar.PruebaTecnicaOmar.service.CriptomonedaServiceImpl;
-import com.pruebatecnicaomar.PruebaTecnicaOmar.service.HistorialService;
+import com.pruebatecnicaomar.PruebaTecnicaOmar.service.EmailServiceImpl;
 import com.pruebatecnicaomar.PruebaTecnicaOmar.service.HistorialServiceImpl;
 
 @RestController
@@ -34,6 +37,26 @@ public class CriptomonedasApiImpl implements CriptomonedasApi{
 	@Autowired
 	private HistorialServiceImpl historialService;
 	
+	@Autowired
+	private EmailServiceImpl emailService;
+	
+	@Override
+	@GetMapping(value="/enviarEmail")
+	public String enviarEmail() {
+		List<Criptomoneda> listaCriptomonedas = new ArrayList<>();
+		listaCriptomonedas.add(getPrecioCriptomonedaByNombre("Bitcoin"));
+		listaCriptomonedas.add(getPrecioCriptomonedaByNombre("Loopring"));
+		listaCriptomonedas.add(getPrecioCriptomonedaByNombre("Cardano"));
+		try {
+			emailService.enviarEmailSimple(listaCriptomonedas);
+		} catch (Exception e) {
+			throw new ResponseStatusException(
+			           HttpStatus.EXPECTATION_FAILED, "Fallo al enviar el email");
+		}
+		
+		return "Email enviado";
+	}
+	
 	@Override
 	@GetMapping(value="/getPrecioCriptomonedaByNombre")
 	public Criptomoneda getPrecioCriptomonedaByNombre(@RequestParam String nombreCriptomoneda) {
@@ -52,6 +75,8 @@ public class CriptomonedasApiImpl implements CriptomonedasApi{
 	@GetMapping(value="/getHistorial")
 	public List<CoinHistorial> getHistorial(@RequestParam String simbolo, @RequestParam int ultimosMinutos) {
 		List<CoinHistorial> res = new ArrayList<>();
+		
+		
 		try {
 			switch (simbolo.toUpperCase()) {
 			case BTC:
@@ -72,6 +97,24 @@ public class CriptomonedasApiImpl implements CriptomonedasApi{
 		}
 		
 		return res;
+	}
+	
+	@Override
+	@GetMapping(value="/getHistorialBTC")
+	public List<CoinHistorial> getHistorialBTC() {
+		return getHistorial(BTC,100);
+	}
+
+	@Override
+	@GetMapping(value="/getHistorialADA")
+	public List<CoinHistorial> getHistorialADA() {
+		return getHistorial(ADA,100);
+	}
+
+	@Override
+	@GetMapping(value="/getHistorialLRC")
+	public List<CoinHistorial> getHistorialLRC() {
+		return getHistorial(LRC,100);
 	}
 	
 	
@@ -116,6 +159,8 @@ public class CriptomonedasApiImpl implements CriptomonedasApi{
 		
 		return aux;
 	}
+
+	
 
 	
 }

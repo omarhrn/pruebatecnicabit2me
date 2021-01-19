@@ -1,6 +1,7 @@
 package com.pruebatecnicaomar.PruebaTecnicaOmar.service;
 
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import com.pruebatecnicaomar.PruebaTecnicaOmar.dao.LRCHistorialRepository;
 import com.pruebatecnicaomar.PruebaTecnicaOmar.dto.Criptomoneda;
 import com.pruebatecnicaomar.PruebaTecnicaOmar.model.ADAHistorialEntity;
 import com.pruebatecnicaomar.PruebaTecnicaOmar.model.BTCHistorialEntity;
-import com.pruebatecnicaomar.PruebaTecnicaOmar.model.CoinHistorialEntity;
 import com.pruebatecnicaomar.PruebaTecnicaOmar.model.CriptomonedaEntity;
 import com.pruebatecnicaomar.PruebaTecnicaOmar.model.LRCHistorialEntity;
 
@@ -35,6 +35,12 @@ public class CriptomonedaServiceImpl implements CriptomonedaService {
 	@Override
 	public void guardarCriptomoneda(Criptomoneda criptomoneda) {
 		if (criptomonedaRepo.existsById(criptomoneda.getId())) {
+			
+			//Convertir fecha a zona local
+			criptomoneda.setUltimaActualizacion(
+					new Date(criptomoneda.getUltimaActualizacion().getTime()
+							+ TimeZone.getDefault().getOffset(System.currentTimeMillis())));
+			
 			CriptomonedaEntity criptomonedaEntity = mapper.map(criptomoneda, CriptomonedaEntity.class);
 			
 			//Actualizamos el precio
