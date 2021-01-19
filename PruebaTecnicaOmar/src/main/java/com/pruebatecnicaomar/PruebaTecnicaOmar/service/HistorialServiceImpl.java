@@ -35,21 +35,21 @@ public class HistorialServiceImpl implements HistorialService{
 	
 	@Override
 	public List<CoinHistorial> getHistorialBTC(int ultimosMinutos) {
-		List<BTCHistorialEntity> btcHisto = btcHistorialRepo.findByIdGreaterThan(Long.valueOf(ultimosMinutos*MINTOMILISEGUNDOS));
+		List<BTCHistorialEntity> btcHisto = btcHistorialRepo.findByIdGreaterThan(Long.valueOf(System.currentTimeMillis() - (ultimosMinutos*MINTOMILISEGUNDOS)));
 		
 		return transformarBTC(btcHisto);
 	}
 
 	@Override
 	public List<CoinHistorial> getHistorialLRC(int ultimosMinutos) {
-		List<LRCHistorialEntity> lrcHisto = lrcHistorialRepo.findByIdGreaterThan(Long.valueOf(ultimosMinutos*MINTOMILISEGUNDOS));
+		List<LRCHistorialEntity> lrcHisto = lrcHistorialRepo.findByIdGreaterThan(Long.valueOf(System.currentTimeMillis() - (ultimosMinutos*MINTOMILISEGUNDOS)));
 		
 		return transformarLRC(lrcHisto);
 	}
 
 	@Override
 	public List<CoinHistorial> getHistorialADA(int ultimosMinutos) {
-		List<ADAHistorialEntity> adaHisto = adaHistorialRepo.findByIdGreaterThan(Long.valueOf(ultimosMinutos*MINTOMILISEGUNDOS));
+		List<ADAHistorialEntity> adaHisto = adaHistorialRepo.findByIdGreaterThan(Long.valueOf(System.currentTimeMillis() - (ultimosMinutos*MINTOMILISEGUNDOS)));
 		
 		return transformarADA(adaHisto);
 	}
