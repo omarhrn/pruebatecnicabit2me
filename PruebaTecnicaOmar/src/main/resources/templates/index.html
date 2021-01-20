@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Prueba Técnica Bit2Me</title>
+    
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <!--FONTS GOOGLE  -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100;300;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+	<div class="container">
+		<nav class="nav-main">
+			<ul class="nav-menu">
+				<li> <a href="/">Criptomonedas</a> </li>
+			</ul>
+		</nav>
+		
+		<!-- Showcase -->
+		<header class="showcase">
+			<div class="opacidad">
+				<h2 th:text="${criptomonedaBTC.nombre}"></h2>
+				<p><span class="negrita">SIMBOLO:</span><span th:text="${criptomonedaBTC.simbolo}"></span></p>
+				<p><span class="negrita">PRECIO:</span><span th:text="${criptomonedaBTC.precio}"></span><span>$</span></p>
+				<p><span class="negrita">FECHA ACT:</span><span th:text="${criptomonedaBTC.ultimaActualizacion}"></span></p> 
+			</div>
+			
+			<div class="opacidad">
+				<h2 th:text="${criptomonedaADA.nombre}"></h2>
+				<p><span class="negrita">SIMBOLO:</span><span th:text="${criptomonedaADA.simbolo}"></span></p>
+				<p><span class="negrita">PRECIO:</span><span th:text="${criptomonedaADA.precio}"></span><span>$</span></p>
+				<p><span class="negrita">FECHA ACT:</span><span th:text="${criptomonedaADA.ultimaActualizacion}"></span></p> 
+			</div>
+			
+			<div class="opacidad">
+				<h2 th:text="${criptomonedaLRC.nombre}"></h2>
+				<p><span class="negrita">SIMBOLO:</span><span th:text="${criptomonedaLRC.simbolo}"></span></p>
+				<p><span class="negrita">PRECIO:</span><span th:text="${criptomonedaLRC.precio}"></span><span>$</span></p>
+				<p><span class="negrita">FECHA ACT:</span><span th:text="${criptomonedaLRC.ultimaActualizacion}"></span></p> 
+			</div>
+			
+		</header>
+		
+	</div>
+		
+	<div class="footer">
+		<p>
+		   Prueba técnica Bit2Me Omar Rendón.
+		</p>
+	</div>
+
+</body>
+</html>
