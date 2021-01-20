@@ -50,13 +50,13 @@ public class CriptomonedaServiceImpl implements CriptomonedaService {
 			//Guardamos en el historial
 			switch (criptomoneda.getSimbolo()) {
 			case "ADA":
-				adaHistorialRepo.insert( new ADAHistorialEntity(criptomonedaEntity.getUltimaActualizacion().getTime(), criptomonedaEntity.getUltimaActualizacion(), criptomonedaEntity));
+				adaHistorialRepo.save( new ADAHistorialEntity(criptomonedaEntity.getUltimaActualizacion().getTime(), criptomonedaEntity.getUltimaActualizacion(), criptomonedaEntity));
 				break;
 			case "BTC":
-				btcHistorialRepo.insert(new BTCHistorialEntity(criptomonedaEntity.getUltimaActualizacion().getTime(), criptomonedaEntity.getUltimaActualizacion(), criptomonedaEntity));
+				btcHistorialRepo.save(new BTCHistorialEntity(criptomonedaEntity.getUltimaActualizacion().getTime(), criptomonedaEntity.getUltimaActualizacion(), criptomonedaEntity));
 				break;
 			case "LRC":
-				lrcHistorialRepo.insert( new LRCHistorialEntity(criptomonedaEntity.getUltimaActualizacion().getTime(), criptomonedaEntity.getUltimaActualizacion(), criptomonedaEntity));
+				lrcHistorialRepo.save( new LRCHistorialEntity(criptomonedaEntity.getUltimaActualizacion().getTime(), criptomonedaEntity.getUltimaActualizacion(), criptomonedaEntity));
 				break;
 			default:
 				break;
