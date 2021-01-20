@@ -29,7 +29,7 @@ public class EmailServiceImpl implements EmailService{
 		
 		SimpleMailMessage mensaje = new SimpleMailMessage();
 		mensaje.setFrom("omarr1354@gmail.com");
-		mensaje.setTo("omarr1354@gmail.com");
+		mensaje.setTo(new String[]{"omarr1354@gmail.com","dev-test@team.bit2me.com"});
 		mensaje.setSubject( "PruebaTecnica-OmarRendon / TechnicalTest-OmarRendon");
 		mensaje.setText("\nHola \nEl precio ($) actual de las criptomonedas es: \n".concat(stringNombrePrecio)
 				.concat("\nHello \nThe current price ($) of cryptocurrencies is: \n".concat(stringNombrePrecio)));
